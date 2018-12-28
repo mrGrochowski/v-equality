@@ -1,5 +1,5 @@
 {
-  "name": "equality-height-in-vue-with-ghv-equlizer",
+  "name": "oop-equality-height-in-vue-with-ghv-equlizer",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
@@ -14,8 +14,7 @@
   },
   "dependencies": {
     "lodash": "latest",
-    "vue": "^2.5.2",
-    "vue-equalizer": "1.0.7"
+    "vue": "^2.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -17,7 +17,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url("https://raw.githack.com/csscoderRU/bootstrap-silent-grid/master/source/scss/_bootstrap-silent-grid.scss");
 #app {
   font-family: "Avenir", Helvetica, Arial,
     sans-serif;
