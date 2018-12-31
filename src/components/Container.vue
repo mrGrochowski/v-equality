@@ -11,7 +11,7 @@
         equal: ['.card__header', '.card__content']
       }"
     >
-      <div class="column" v-for="i in 17">
+      <div class="column" v-for="i in changes">
         <card
           :heading="
             heading[Math.floor(Math.random() * 3)]
@@ -43,7 +43,7 @@ Vue.use(Equality)
 //   },
 //   update: function(el, binding, vnode) {}
 // })
-
+import chance from "chance"
 export default {
   name: "Container",
   data() {
@@ -57,11 +57,25 @@ export default {
         "Little heading",
         "Mediuuuuuum heading",
         "Large heading as much is posibble, of course, mey be longer but for this example is enough"
-      ]
+      ],
+      changes: 10
+    }
+  },
+  methods: {
+    todo: function() {
+      const self = this
+      this.intervalid1 = setInterval(function() {
+        self.changes = Math.floor(
+          Math.random() * 10 + 2
+        )
+      }, 5000)
     }
   },
   components: {
     Card
+  },
+  mounted() {
+    this.todo()
   }
 }
 </script>

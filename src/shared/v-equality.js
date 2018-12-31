@@ -48,9 +48,13 @@ class Equality {
   matchGroupsInRows(rows, equal) {
     return rows.map(function(e) {
       return equal.map((r, i) => {
-        return e.map(rowKey => {
-          return rowKey.querySelector(r)
-        })
+        return e
+          .map(rowKey => {
+            return rowKey.querySelector(r)
+          })
+          .filter(f => {
+            return f !== null
+          })
       })
     })
   }
@@ -68,9 +72,17 @@ class Equality {
   }
   getMinHeight(elements) {
     let min = 0
-    ;[].forEach.call(elements, element => {
-      if (element.offsetHeight > min) {
-        min = element.offsetHeight
+    ;[].forEach.call(elements, (element, i) => {
+      if (
+        !_.isUndefined(element) &&
+        !_.isNull(element) &&
+        element.getBoundingClientRect().height >
+          min
+      ) {
+        //min = element.offsetHeight
+
+        min = element.getBoundingClientRect()
+          .height
       }
     })
 
@@ -85,10 +97,10 @@ class Equality {
   }
   clearHeight(elements) {
     elements.map(e => {
-      e.els.map(f => {
+      e.els.map((f, i) => {
         f.style.cssText = f.style.cssText.replace(
           /height:[\w\s]{1,};/g,
-          "height:100%"
+          "height:auto"
         )
       })
     })
@@ -108,6 +120,8 @@ class Equality {
   }
 
   groupsWithMaxHeight() {
+    console.log(this.groups())
+
     return this.matchGroupsMaxHeight(
       this.groups()
     )
@@ -119,20 +133,37 @@ class Equality {
 }
 function plugin(Vue, options = {}) {
   Vue.directive("equality", {
-    bind(el, binding, vnode) {},
-    update(el, binding, vnode) {},
     inserted(el, binding, vnode) {
       let equalityInstance = new Equality(
         el,
         binding
       )
       equalityInstance.init()
-
       window.addEventListener(
         "resize",
-        function() {
+        _.debounce(function() {
           equalityInstance.init()
-        }
+        }, 300)
+      )
+    },
+    componentUpdated(el, binding, vnode) {
+      let equalityInstance = new Equality(
+        el,
+        binding
+      )
+      equalityInstance.init()
+      Vue.nextTick(function() {
+        let equalityInstance2 = new Equality(
+          el,
+          binding
+        )
+        equalityInstance2.init()
+      })
+      window.addEventListener(
+        "resize",
+        _.debounce(function() {
+          equalityInstance.init()
+        }, 300)
       )
     }
   })
